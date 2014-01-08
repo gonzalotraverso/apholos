@@ -236,14 +236,17 @@ section{
 .col-md-4{
     padding: 15px 40px;
 }
+.col-md-6{
+    padding: 15px 25px;
+}
 .row{
     padding: 56px 0;
 }
-
-/* Positioning */
-.center-img{
-    text-align: center;
+.container{
+    max-width: 960px
 }
+
+
 
 /* Full width bars */
 .full-width-bar{
@@ -254,13 +257,18 @@ section{
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 9999px;   
+  width: 100%;   
 } 
 .full-width-bar:before {
   right: 100%; 
 }
 .full-width-bar:after {
   left: 100%;
+}
+
+/* Adjust height to context in landscape */
+.landscape-height{
+    height: auto;
 }
 
 
@@ -279,12 +287,15 @@ section{
 
 /*---------------- About ----------------*/
 .banner{
-    max-width: 960px;
     background-color: #e6e6e6;
 }
-.banner:before, .banner:after{
-    background-color: #e6e6e6;
+.banner>div{
+    padding: 0
 }
+
+
+
+/*--------------- History ---------------*/
 
 
 
