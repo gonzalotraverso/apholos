@@ -135,6 +135,8 @@ h2, h3, h4{
 h4{
     font-weight: 700;
     font-size: 24px;
+    border-bottom: 1px #97928f solid;
+    padding: 10px 0;
 }
 h4, p{
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -142,6 +144,7 @@ h4, p{
 p{
     font-size: 14px;
     color: #656565;
+    text-align: justify;
 }
 .light{
     font-weight: 300;
@@ -164,6 +167,19 @@ p{
 .h1-style-2{
     font-size: 73px;
 }
+/* Media queries */
+@media (max-width: 640px){
+    h1{
+        font-size: 53px;
+    }
+    .h1-style-1{
+        font-size: 28px;
+    }
+    .h1-style-2{
+        font-size: 43px;
+    }
+}
+
 
 
 
@@ -172,6 +188,11 @@ p{
 /*---------------------------------------------------------------------------------*/
 
 /*---------------- General rules ----------------*/
+
+/* Hide x-axis scrolling */
+.hide-x{
+    overflow-x: hidden;
+}
 
 /* For vertically align any content */
 .vertical-align-wrapper{
@@ -191,6 +212,57 @@ p{
     background-color: #fff;
     margin: 14px auto;
 }
+.h2-divider, .h3-divider{
+    background-color: #ff4800;
+    margin: 0 auto;
+    height: 3px;
+}
+.h2-divider{
+    width: 58px;
+    position: relative;
+    top: -2px;
+}
+.h3-divider{
+    width: 38px;
+}
+
+/* common section rules */
+section{
+    padding-bottom: 94px;
+    border-bottom: 2px #f6f5f4 solid;
+}
+
+/* Columns modifications */
+.col-md-4{
+    padding: 15px 40px;
+}
+.row{
+    padding: 56px 0;
+}
+
+/* Positioning */
+.center-img{
+    text-align: center;
+}
+
+/* Full width bars */
+.full-width-bar{
+    position: relative;
+}
+.full-width-bar:before, .full-width-bar:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 9999px;   
+} 
+.full-width-bar:before {
+  right: 100%; 
+}
+.full-width-bar:after {
+  left: 100%;
+}
+
 
 /*---------------- Intro ----------------*/
 #intro{
@@ -204,6 +276,15 @@ p{
     margin-top: 14px;
 }
 
+
+/*---------------- About ----------------*/
+.banner{
+    max-width: 960px;
+    background-color: #e6e6e6;
+}
+.banner:before, .banner:after{
+    background-color: #e6e6e6;
+}
 
 
 
