@@ -97,16 +97,24 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
-/*---------------- Fonts ----------------*/
+
+
+/*---------------------------------------------------------------------------------*/
+/*----------------------------------- Typography ----------------------------------*/
+/*---------------------------------------------------------------------------------*/
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:600italic,700italic,400,700,300,600|Montserrat:400,700);
 /* font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif; */
 /* font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; */
 
 h1{
     color: #fff;
+    font-size: 83px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
 }
 h1, h2, h3{
     font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-align: center;
 }
 h2{
     font-size: 46px;
@@ -114,6 +122,12 @@ h2{
 }
 h3{
     font-size: 30px;
+}
+h1, h2, h3, h4{
+    text-transform: uppercase;
+}
+h2, h3{
+    letter-spacing: 0.05em;
 }
 h2, h3, h4{
     color: #505050;
@@ -140,6 +154,54 @@ p{
 }
 .italic{
     font-style: italic;
+}
+.h1-style-1, .h1-style-2{
+    font-weight: 400;
+}
+.h1-style-1{
+    font-size: 54px;
+}
+.h1-style-2{
+    font-size: 73px;
+}
+
+
+
+/*---------------------------------------------------------------------------------*/
+/*------------------------------------ Content ------------------------------------*/
+/*---------------------------------------------------------------------------------*/
+
+/*---------------- General rules ----------------*/
+
+/* For vertically align any content */
+.vertical-align-wrapper{
+    display: table;
+    width: 100%;
+}
+.vertical-align-element{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+/* Dividers */
+.h1-divider{
+    width: 120px;
+    height: 4px;
+    background-color: #fff;
+    margin: 14px auto;
+}
+
+/*---------------- Intro ----------------*/
+#intro{
+    background-image: url(../img/apholos-poster.jpg);
+    background-position: center top;
+    background-attachment: fixed;
+    height: 932px;
+    background-size: cover;
+}
+#intro img{
+    margin-top: 14px;
 }
 
 
