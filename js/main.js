@@ -1,16 +1,17 @@
 (function($){
 	"use strict";
+	
 
 	var Resizer = function(){
 		this.$win = $(window);
 		this.$adjustees = $(".adjust-height");
-		console.log(this.$adjustees);
 		this.init();
 	};
 
 	Resizer.prototype = {
 		init: function(){
 			this.wigleyRoom = 20;
+			this.winW = this.$win.width();
 
 			this.bindEvents();
 		},
@@ -22,6 +23,9 @@
 				},
 				load: function(){
 					self.orientationHandler();
+				},
+				resize: function(){
+					self.winW = self.$win.width();
 				}
 			});
 		},
@@ -39,8 +43,11 @@
 			});
 		},
 		getMaxHeight: function(elem){
-			var content = elem.children(":first");
-			var contentH = ( content.height() > elem.attr("max-height") ) ? (content.height() + this.wigleyRoom * 2) : elem.attr("max-height");
+			var $content = elem.children();
+			var contentH = 0;
+			$content.each(function(){
+				contentH += $(this).height();
+			});
 			return contentH;
 		},
 		orientationHandler: function(){
@@ -59,8 +66,62 @@
 	};
 
 
+	var ParallaxScrolling = function(resizer){
+		this.$win = resizer.$win;
+		this.$sections = $('section');
+		this.resizer = resizer;
+		this.init();
+	}
+
+	ParallaxScrolling.prototype = {
+		init: function(){
+			this.winH = this.$win.height();
+			this.$sections.css({top : this.winH});
+			this.$active = this.$sections.siblings('.section-1');
+			this.$active.css({top : 0});
+
+			this.acc = 5;
+
+			this.bindEvents();
+		},
+		bindEvents: function(){
+			var self = this;
+			this.$win.on('mousewheel', function(event){
+				self.moveLayers(event);
+			});
+		},
+		moveLayers: function(event){
+			if (this.resizer.$win.width() > 768) {
+				event.preventDefault();
+
+				var top = this.$active.offset().top;
+				var bottom = this.$active.height() + top;
+				this.actHeight = this.$active.height();
+
+				var speed = this.acc * event.deltaFactor;
+
+				if(event.deltaY < 0){
+					if(bottom <= this.winH && this.$active.next("section").length){
+						this.$active = this.$active.next("section");
+					}else if(bottom > this.winH){
+						var topn = (bottom - speed < this.winH) ? this.winH - this.actHeight : top - speed;
+						this.$active.css({top : topn});
+					}
+				}else{
+					if(top >= this.winH && this.$active.prev("section").length){
+						this.$active = this.$active.prev("section");
+					}else if(top < this.winH && this.$active.prev("section").length){
+						var topn = (top + speed > this.winH) ? this.winH : top + speed;
+						this.$active.css({top : topn});
+					}
+				}
+			};
+		}
+	}
+
 	$(document).ready(function(){
 		var resizer = new Resizer();
+		var pscroll = new ParallaxScrolling(resizer);
 	});
 
 })(jQuery);

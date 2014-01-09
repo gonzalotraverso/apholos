@@ -230,6 +230,11 @@ p{
 section{
     padding-bottom: 94px;
     border-bottom: 2px #f6f5f4 solid;
+    position: absolute;
+    width: 100%;
+    background-color: #fff;
+    -webkit-box-shadow: 0 0 0 2px #B3B2B1;
+    box-shadow: 0 0 0 2px #B3B2B1;
 }
 
 /* Columns modifications */
@@ -271,13 +276,16 @@ section{
     height: auto;
 }
 
+/* Parallax effect 
+.active-section{z-index: 100;}
+
 
 /*---------------- Intro ----------------*/
 #intro{
     background-image: url(../img/apholos-poster.jpg);
     background-position: center top;
-    background-attachment: fixed;
-    height: 932px;
+    /*background-attachment: fixed;*/
+    /*max-height: 932px;*/
     background-size: cover;
 }
 #intro img{
@@ -290,22 +298,33 @@ section{
     background-color: #e6e6e6;
 }
 .banner>div{
-    padding: 0
+    padding: 0;
+    position: relative;
 }
 
 
 
+
 /*--------------- History ---------------*/
+#history-flow{
+
+}
 
 
 
 
 
 
+/*------------ Media Queries ------------*/
 
-
-
-
+/* Mobile */
+@media (max-width: 768px){
+    section{
+        position: static;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+}
 
 
 
