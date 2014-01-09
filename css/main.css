@@ -276,19 +276,21 @@ section{
     height: auto;
 }
 
-/* Parallax effect 
-.active-section{z-index: 100;}
+/* Parallax effect  */
+.sec-lvl-style{
+    position: relative;
+}
 
 
 /*---------------- Intro ----------------*/
-#intro{
+.intro{
     background-image: url(../img/apholos-poster.jpg);
     background-position: center top;
     /*background-attachment: fixed;*/
     /*max-height: 932px;*/
     background-size: cover;
 }
-#intro img{
+.intro img{
     margin-top: 14px;
 }
 
