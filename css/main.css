@@ -99,12 +99,33 @@ textarea {
 
 
 
+
+
+/*---------------------------------------------------------------------------------*/
+/*-------------------------------------- Reset ------------------------------------*/
+/*---------------------------------------------------------------------------------*/
+ul{
+    list-style: none;
+    padding: 0;
+    margin: 0
+}
+
+
+
+
+
+
 /*---------------------------------------------------------------------------------*/
 /*----------------------------------- Typography ----------------------------------*/
 /*---------------------------------------------------------------------------------*/
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:600italic,700italic,400,700,300,600|Montserrat:400,700);
-/* font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif; */
-/* font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; */
+
+.montserrat{
+    font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif; 
+}
+.openSans{
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; 
+}
 
 h1{
     color: #fff;
@@ -123,13 +144,13 @@ h2{
 h3{
     font-size: 30px;
 }
-h1, h2, h3, h4{
+h1, h2, h3, h4, a, .upper{
     text-transform: uppercase;
 }
 h2, h3{
     letter-spacing: 0.05em;
 }
-h2, h3, h4{
+h2, h3, h4, a, a:hover, .darkest{
     color: #505050;
 }
 h4{
@@ -141,10 +162,15 @@ h4{
 h4, p{
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-p{
+p, a{
     font-size: 14px;
+}
+p{
     color: #656565;
     text-align: justify;
+}
+.sm-text{
+    font-size: 12px;
 }
 .light{
     font-weight: 300;
@@ -167,6 +193,14 @@ p{
 .h1-style-2{
     font-size: 73px;
 }
+a{
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: none;
+}
+
+
 /* Media queries */
 @media (max-width: 640px){
     h1{
@@ -280,6 +314,144 @@ section{
 .sec-lvl-style{
     position: relative;
 }
+.prev-active{
+    z-index: 200;
+}
+.active-section{
+    z-index: 300;
+}
+
+/* Positioning */
+.right-floater{
+    float: right;
+}
+
+
+/*----------------- Menu ----------------*/
+header{
+    position: fixed;
+    z-index: 999;
+    background-color: #fff;
+    border-bottom: 1px #a7a7a7 solid;
+    width: 100%;
+}
+#desktop-menu{
+    padding: 0 15px;
+    height: 96px;
+    line-height: 96px
+}
+#desktop-menu>*{
+    display: inline-block;
+}
+#desktop-menu nav{
+    border-right: 1px #dad9d9 solid; 
+}
+#desktop-menu nav li{
+    display: inline-block;
+    margin: 0 8px;
+    -webkit-transition: border-width 0.2s ease;
+    -moz-transition: border-width 0.2s ease;
+    -ms-transition: border-width 0.2s ease;
+    -o-transition: border-width 0.2s ease;
+    transition: border-width 0.2s ease;
+}
+#desktop-menu nav ul li.nav-selected{
+    border-top: 2px #ff4800 solid;
+}
+#desktop-menu nav li:hover{
+    border-top: 2px #f7c599 solid;
+}
+.logo img{
+    width: 283px;
+}
+#desktop-menu .language{
+    line-height: normal;
+    padding: 30px  0 0 30px;
+}
+#desktop-menu .language>p{
+    position: relative;
+    top: -12px;
+    line-height: 36px;
+    border-right: 1px #9c9794 solid;
+    padding-right: 6px;
+} 
+#desktop-menu .language>*{
+    display: inline-block;
+}
+#desktop-menu .language ul{
+    padding-left: 6px;
+}
+#desktop-menu .language ul li{
+    line-height: 12px;
+    height: 12px;
+    width: 70px;
+}
+#desktop-menu .language ul li>*{
+    display: inline-block;
+}
+#desktop-menu .language .lang{
+    height: 8px;
+    width: 32px;
+    background-color: #c1c1c1;
+    float: right;
+}
+#desktop-menu .language .lang .sub-lang{
+    height: 100%;
+    width: 17px;
+    background-color: #e6e6e6;
+    position: relative;
+    
+}
+#desktop-menu .language .lang .sub-lang, #desktop-menu .clients>div img{
+    -webkit-transition: left 0.3s ease;
+    -moz-transition: left 0.3s ease;
+    -ms-transition: left 0.3s ease;
+    -o-transition: left 0.3s ease;
+    transition: left 0.3s ease;
+}
+#desktop-menu .language ul li:hover .sub-lang{
+    left: 15px;
+}
+#desktop-menu .lang-active a{
+    font-weight: 700;
+}
+#desktop-menu .lang-active .lang{
+    background-color: #fcff00;
+}
+#desktop-menu .lang-active .lang .sub-lang{
+    background-color: #ff0000;
+}
+#desktop-menu .clients>*{
+    display: inline-block;
+}
+#desktop-menu .clients{
+    line-height: 36px;
+    margin-top: 30px;
+    padding-left: 30px;
+    border-right: 1px #9c9794 solid;
+}
+#desktop-menu .clients>div{
+    height: 16px;
+    width: 16px;
+    margin: 0 6px;
+    top: 2px;
+    position: relative;
+}
+#desktop-menu .clients>div img{
+    position: absolute;
+    
+}
+#desktop-menu .clients:hover .clients-arrow{
+    left: 2px;    
+}
+
+
+
+
+
+
+
+
 
 
 /*---------------- Intro ----------------*/
@@ -292,6 +464,7 @@ section{
 }
 .intro img{
     margin-top: 14px;
+    width: 48px;
 }
 
 
@@ -319,8 +492,27 @@ section{
 
 /*------------ Media Queries ------------*/
 
+/* For when menu wont fit */
+@media (max-width: 1340px){
+    #desktop-menu{
+        padding: 0;
+    }
+    #desktop-menu .logo{
+        padding-left: 15px;
+    }
+    #desktop-menu .language{
+        padding-right: 15px;
+    }
+    #desktop-menu nav{
+        line-height: 36px;
+        border-right: none;
+        border-top: 1px #dad9d9 solid;
+        width: 100%;
+    }
+}
+
 /* Mobile */
-@media (max-width: 768px){
+@media (max-width: 1024px){
     section{
         position: static;
         -webkit-box-shadow: none;

@@ -76,7 +76,7 @@
 
 	ParallaxScrolling.prototype = {
 		init: function(){
-			if (this.resizer.$win.width() > 768) {
+			if (this.resizer.$win.width() > 1024) {
 				
 				this.setUp();
 				this.bindEvents();
@@ -92,13 +92,12 @@
 			var self = this;
 			this.winH = this.$win.height();
 			this.$sections.css({top : this.winH});
-			this.$active = this.$sections.first();
+			this.$active = this.$sections.first().addClass('active-section');
 			this.$active.css({top : 0});
 
 			this.$secLvl.addClass('sec-lvl-style').each(function(){
 				var $sec = $(this).parents("section");
 				var top = $sec.offset().top;
-				console.log($sec.innerHeight());
 				if($sec.prev("section").length)
 					$(this).css({top : (self.winH * 0.18) });
 				else
@@ -128,7 +127,8 @@
 
 			if(event.deltaY < 0){
 				if(bottom <= this.winH && this.$active.next("section").length){
-					this.$active = this.$active.next("section");
+					this.$active.removeClass('active-section');
+					this.$active = this.$active.next("section").addClass('active-section');
 				}else if(bottom > this.winH){
 					var topn = (bottom - speed < this.winH) ? this.winH - this.actHeight : top - speed;
 					this.$active.css({top : topn});
@@ -137,7 +137,8 @@
 				}
 			}else{
 				if(top >= this.winH && this.$active.prev("section").length){
-					this.$active = this.$active.prev("section");
+					this.$active.removeClass('active-section');
+					this.$active = this.$active.prev("section").addClass('active-section');
 				}else if(top < this.winH && this.$active.prev("section").length){
 					var topn = (top + speed > this.winH) ? this.winH : top + speed;
 					this.$active.css({top : topn});
@@ -149,9 +150,81 @@
 		}
 	}
 
+	var Menu = function(pscroll){
+		this.$container = $("header");
+		this.$menu = this.$container.find("nav");
+		this.$items = this.$menu.find("a");
+		this.$pscroll = pscroll;
+		this.$sections = pscroll.$sections;
+		this.init(pscroll);
+	};
+
+	Menu.prototype = {
+		init: function(p){
+			this.speed = 800;
+
+			this.setUp()
+			this.bindEvents(p);
+		},
+		setUp: function(){
+			this.$sections.each(function(i, v){
+				$(this).attr("data-index", i);
+			})
+		},
+		bindEvents: function(p){
+			var self = this;
+			this.$items.on('click', function(e){
+				self.handleClick(e, p);
+			});
+		},
+		handleClick: function(e, p){
+			e.preventDefault();
+			this.menuH = this.$container.height();
+			var $target = this.$sections.siblings("#"+$(e.currentTarget).data("target"));
+			var tIndex = $target.data("index");
+			var activeIndex = p.$active.data("index");
+
+			if($target.is(p.$active.prev())){
+				p.$active.animate({top : p.winH}, this.speed, function(){
+					$target.animate({top: this.menuH}, this.speed);
+				});
+				p.$active.find(".scroll-second-lvl").animate({top : p.winH * 0.18}, this.speed);
+			}else{
+				if(tIndex < activeIndex){
+
+					$target.css({top : p.winH});
+					p.$active.removeClass("active-section").addClass('prev-active');
+					$target.addClass('active-section').animate({top : this.menuH}, this.speed, function(){
+						p.$active.removeClass('prev-active');
+						$target.nextAll("section").each(function(){
+							$(this).css({top: p.winH});
+						});
+					});
+					$target.nextAll("section").find(".scroll-second-lvl").animate({top: (p.winH * 0.18)}, this.speed);
+					$target.prevAll("section").css({top: this.menuH}).find(".scroll-second-lvl").css({top: - (p.winH * 0.18)});
+					
+				}else{
+					$target.animate({top: this.menuH}, this.speed, function(){
+						$target.prevAll("section").each(function(){
+							$(this).css({top: p.winH - $(this).height()});
+						});
+					});
+					$target.prevAll("section").find('.scroll-second-lvl').animate({top: -(p.winH * 0.18)}, this.speed);
+					$target.nextAll("section").css({top: p.winH}).find('.scroll-second-lvl').css({top: p.winH * 0.18});
+					p.$active.removeClass('active-section').find('.scroll-second-lvl').animate({top: -(p.winH * 0.18)}, this.speed);
+					$target.addClass('active-section');
+				}
+			}
+
+			p.$active = $target;
+			
+		}
+	};
+
 	$(document).ready(function(){
 		var resizer = new Resizer();
 		var pscroll = new ParallaxScrolling(resizer);
+		var menu = new Menu(pscroll);
 	});
 
 })(jQuery);
