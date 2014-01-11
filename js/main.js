@@ -70,6 +70,7 @@
 		this.$win = resizer.$win;
 		this.$sections = $('section');
 		this.$secLvl = this.$sections.find(".scroll-second-lvl");
+		this.$navItems = $("#desktop-menu nav li");
 		this.resizer = resizer;
 		this.init();
 	}
@@ -92,7 +93,7 @@
 			var self = this;
 			this.winH = this.$win.height();
 			this.$sections.css({top : this.winH});
-			this.$active = this.$sections.first().addClass('active-section');
+			this.changeActive(this.$sections.first());
 			this.$active.css({top : 0});
 
 			this.$secLvl.addClass('sec-lvl-style').each(function(){
@@ -127,8 +128,7 @@
 
 			if(event.deltaY < 0){
 				if(bottom <= this.winH && this.$active.next("section").length){
-					this.$active.removeClass('active-section');
-					this.$active = this.$active.next("section").addClass('active-section');
+					this.changeActive(this.$active.next("section"));
 				}else if(bottom > this.winH){
 					var topn = (bottom - speed < this.winH) ? this.winH - this.actHeight : top - speed;
 					this.$active.css({top : topn});
@@ -137,8 +137,7 @@
 				}
 			}else{
 				if(top >= this.winH && this.$active.prev("section").length){
-					this.$active.removeClass('active-section');
-					this.$active = this.$active.prev("section").addClass('active-section');
+					this.changeActive(this.$active.prev("section"));
 				}else if(top < this.winH && this.$active.prev("section").length){
 					var topn = (top + speed > this.winH) ? this.winH : top + speed;
 					this.$active.css({top : topn});
@@ -147,12 +146,20 @@
 					$secLvlPrev.css({top : secTopPrev + event.deltaFactor});
 				}
 			}
+		},
+		changeActive: function(section){
+			this.$sections.removeClass('active-section');
+			this.$active = section.addClass('active-section');
+			this.$activeNav = this.$navItems.has("[data-target="+this.$active.attr("id")+"]");
+			this.$navItems.removeClass('nav-selected');
+			this.$activeNav.addClass('nav-selected');
 		}
 	}
 
 	var Menu = function(pscroll){
 		this.$container = $("header");
-		this.$menu = this.$container.find("nav");
+		this.$deskNav = this.$container.find("#desktop-menu");
+		this.$menu = this.$deskNav.find("nav");
 		this.$items = this.$menu.find("a");
 		this.$pscroll = pscroll;
 		this.$sections = pscroll.$sections;
@@ -188,7 +195,7 @@
 				p.$active.animate({top : p.winH}, this.speed, function(){
 					$target.animate({top: this.menuH}, this.speed);
 				});
-				p.$active.find(".scroll-second-lvl").animate({top : p.winH * 0.18}, this.speed);
+				p.$active.find(".scroll-second-lvl").animate({top : (p.winH * 0.18) + this.menuH}, this.speed);
 			}else{
 				if(tIndex < activeIndex){
 
@@ -201,7 +208,7 @@
 						});
 					});
 					$target.nextAll("section").find(".scroll-second-lvl").animate({top: (p.winH * 0.18)}, this.speed);
-					$target.prevAll("section").css({top: this.menuH}).find(".scroll-second-lvl").css({top: - (p.winH * 0.18)});
+					$target.prevAll("section").css({top: this.menuH}).find(".scroll-second-lvl").css({top: - (p.winH * 0.18) + this.menuH});
 					
 				}else{
 					$target.animate({top: this.menuH}, this.speed, function(){
@@ -211,12 +218,14 @@
 					});
 					$target.prevAll("section").find('.scroll-second-lvl').animate({top: -(p.winH * 0.18)}, this.speed);
 					$target.nextAll("section").css({top: p.winH}).find('.scroll-second-lvl').css({top: p.winH * 0.18});
-					p.$active.removeClass('active-section').find('.scroll-second-lvl').animate({top: -(p.winH * 0.18)}, this.speed);
+					p.$active.removeClass('active-section').find('.scroll-second-lvl').animate({top: -(p.winH * 0.18) + this.menuH}, this.speed);
 					$target.addClass('active-section');
 				}
 			}
 
 			p.$active = $target;
+			this.$items.parents("li").removeClass('nav-selected');
+			$(e.currentTarget).parents("li").addClass('nav-selected');
 			
 		}
 	};
