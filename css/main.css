@@ -350,35 +350,49 @@ header{
 /* Desktop Menu */
 /***************/
 #desktop-menu{
-    padding: 0 15px;
     height: 96px;
-    line-height: 96px
 }
 #desktop-menu>*{
     display: inline-block;
 }
 #desktop-menu nav{
-    border-right: 1px #dad9d9 solid; 
-    padding-top: 2px;
+    height: 96px;
+}
+#desktop-menu nav ul{
+    height: 96px
 }
 #desktop-menu nav li{
     display: inline-block;
-    margin: 0 8px;
+    padding: 0 8px;
+    border-top: 2px #fff solid;
+    line-height: 93px;
     -webkit-transition: border-width 0.2s ease;
     -moz-transition: border-width 0.2s ease;
     -ms-transition: border-width 0.2s ease;
     -o-transition: border-width 0.2s ease;
     transition: border-width 0.2s ease;
-    margin-top: -2px;
 }
 #desktop-menu nav ul li.nav-selected{
     border-top: 2px #ff4800 solid;
 }
 #desktop-menu nav li:hover{
-    border-top: 2px #f7c599 solid;
+    background-color: #f6f6f6;
+    border-top: 2px #f6f6f6 solid;
+}
+.logo{
+    padding-left: 15px;
+    line-height: 96px;
 }
 .logo img{
     width: 283px;
+}
+.lang-log{
+    background-color: #f6f6f6;
+    height: 100%;
+    padding-right: 15px;
+}
+.lang-log>div{
+    float: left;
 }
 #desktop-menu .language{
     line-height: normal;
@@ -757,7 +771,7 @@ header{
 /*------------ Media Queries ------------*/
 
 /* For when menu wont fit */
-@media (max-width: 1340px){
+@media (max-width: 1275px){
     #desktop-menu{
         padding: 0;
     }
@@ -773,6 +787,9 @@ header{
         border-right: none;
         border-top: 1px #dad9d9 solid;
         width: 100%;
+    }
+    .lang-log{
+        background-color: transparent;
     }
 }
 
