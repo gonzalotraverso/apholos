@@ -356,10 +356,8 @@ header{
     display: inline-block;
 }
 #desktop-menu nav{
-    height: 96px;
 }
 #desktop-menu nav ul{
-    height: 96px
 }
 #desktop-menu nav li{
     display: inline-block;
@@ -771,7 +769,7 @@ header{
 /*------------ Media Queries ------------*/
 
 /* For when menu wont fit */
-@media (max-width: 1275px){
+@media (max-width: 1360px){
     #desktop-menu{
         padding: 0;
     }
@@ -783,10 +781,12 @@ header{
     }
     #desktop-menu nav{
         height: 36px;
-        line-height: 34px;
         border-right: none;
         border-top: 1px #dad9d9 solid;
         width: 100%;
+    }
+    #desktop-menu nav li{
+        line-height: 32px
     }
     .lang-log{
         background-color: transparent;
