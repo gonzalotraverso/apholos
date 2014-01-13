@@ -192,14 +192,15 @@
 		},
 		handleClick: function(e, p){
 			e.preventDefault();
+			var self = this;
 			this.menuH = this.$container.height();
 			var $target = this.$sections.siblings("#"+$(e.currentTarget).data("target"));
 			var tIndex = $target.data("index");
 			var activeIndex = p.$active.data("index");
 
-			if($target.is(p.$active.prev())){
+			if($target.is(p.$active.prev()) && p.$active.offset().top > this.menuH){
 				p.$active.animate({top : p.winH}, this.speed, function(){
-					$target.animate({top: this.menuH}, this.speed);
+					$target.animate({top: self.menuH}, self.speed);
 				});
 				p.$active.find(".scroll-second-lvl").animate({top : (p.winH * 0.18) - this.menuH}, this.speed);
 			}else{
