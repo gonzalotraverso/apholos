@@ -6,6 +6,7 @@
 		this.$win = $(window);
 		this.$adjustees = $(".adjust-height");
 		this.$mobileLogo = $("#mobile-logo");
+		this.$sections = $("section");
 		this.init();
 	};
 
@@ -41,6 +42,9 @@
 					$elem.height(maxH);
 				else
 					$elem.height(winHeight);
+			});
+			this.$sections.$.each(function() {
+				$(this).css({"min-height": winHeight});
 			});
 		},
 		getMaxHeight: function(elem){
@@ -256,7 +260,6 @@
 			this.bindEvents();
 		},
 		bindEvents: function(){
-			console.log(this.eventType);
 			var self = this;
 			this.$trigger.on(this.eventType , function(e){
 				self.toggleMenu(e);
@@ -274,7 +277,6 @@
 	        return check;
 		},
 		toggleMenu: function(e){
-			console.log("ASda");
 			e.stopPropagation();
             e.preventDefault();
             if(this.$menu.hasClass('bt-menu-open')){
@@ -294,9 +296,70 @@
 			this.$bod.scrollTo(top - 50, 800);
 			this.toggleMenu(e);
 		}
+	};
+
+
+
+	var Portfolio = function(resizer){
+		this.$button = $(".load-more");
+		this.$gallery = $("#grid");
+		this.$items = this.$gallery.find('li');
+		this.$img = this.$items.find("a");
+		this.$last = this.$items.last();
+		this.$resizer = resizer;
+		this.init();
+	};
+
+	Portfolio.prototype = {
+		init: function(){
+			this.loadMore();
+			$('#products').css('height', 'auto');
+			this.$img.fancybox();
+			this.bindEvents();
+		},
+		bindEvents: function(){
+			var self = this;
+			this.$button.on('click', function(e){
+				e.preventDefault();
+				self.loadMore();
+			});
+			this.$gallery.mixitup({
+				filterSelector: ".filter"
+			});
+		},
+		loadMore: function(){
+			var self = this;
+
+			var last = this.$gallery.find('li').length - 1;
+			$.ajax({
+				url: 'loadMore.php',
+				type: 'POST',
+				dataType: 'json',
+				data: {index: last},
+			})
+			.done(function(data) {
+				$.each(data, function(index, val) {
+					self.createItem(val);
+				});
+				self.$gallery.mixitup('remix', "all");
+			})
+			.fail(function(xhr, textStatus, errorThrown) {
+              	console.log(xhr.responseText);
+          	});
+			
+		},
+		createItem: function(item){
+			console.log(item);
+			var li = document.createElement("li");
+            this.$last.before(li);
+            var $li = this.$last.prev();
+			$li.addClass('mix display-ib '+item.categories)
+				.append('<a href="img/portfolio/images/'+item.image+'"><img src="img/portfolio/thumbs/'+item.thumb+'"><p class="upper">'+item.caption+'</p></a>');
+            
+
+
+		}
 	}
-
-
 
 
 
@@ -305,6 +368,7 @@
 		var pscroll = new ParallaxScrolling(resizer);
 		var menu = new Menu(pscroll);
 		var mobMenu = new MobileMenu(pscroll);
+		var portfolio = new Portfolio(resizer);
 	});
 
 })(jQuery);

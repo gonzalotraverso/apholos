@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
+        <title>Apholos</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,6 +14,7 @@
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/jquery.fancybox.css">
         <link rel="stylesheet" href="css/main.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
@@ -23,16 +24,16 @@
         <![endif]-->
         <header>
             <div id="desktop-menu" class="montserrat">
-                <div class="logo">
+                <div class="logo display-ib">
                     <img src="img/logo-apholos-full.svg">
                 </div>
-                <div class="right-floater lang-log">
+                <div class="right-floater lang-log display-ib">
                     <div class="clients">
                         <a class="sm-text" href="">acceso clientes</a><div><img class="clients-arrow" src="img/log-in-flecha.svg"><img src="img/log-in-door.svg"></div>
                     </div>
                     <div class="language">
-                        <p class="sm-text upper montserrat darkest">idioma</p>
-                        <ul class="openSans italic">
+                        <p class="sm-text upper montserrat darkest display-ib">idioma</p>
+                        <ul class="openSans italic display-ib">
                             <li><a class="sm-text" href="">en</a><div class="lang"><div class="sub-lang"></div></div></li>
                             <li class="lang-active"><a class="sm-text" href="">esp</a><div class="lang"><div class="sub-lang"></div></div></li>
                             <li><a class="sm-text" href="">por</a><div class="lang"><div class="sub-lang"></div></div></li>
@@ -41,25 +42,25 @@
                 </div>
                 <nav class="right-floater">
                     <ul>
-                        <li>
+                        <li class="display-ib">
                             <a class="sm-text" data-target="about" href="">empresa</a>
                         </li>
-                        <li>
+                        <li class="display-ib">
                             <a class="sm-text" data-target="history" href="">historia</a>
                         </li>
-                        <li>
-                            <a class="sm-text" data-target="technology" href="">productos</a>
+                        <li class="display-ib">
+                            <a class="sm-text" data-target="products" href="">productos</a>
                         </li>
-                        <li>
+                        <li class="display-ib">
                             <a class="sm-text" data-target="technology" href="">tecnología</a>
                         </li>
-                        <li>
+                        <li class="display-ib">
                             <a class="sm-text" data-target="ideas" href="">tus ideas</a>
                         </li>
-                        <li>
+                        <li class="display-ib">
                             <a class="sm-text" data-target="eco" href="">sustentabilidad</a>
                         </li>
-                        <li>
+                        <li class="display-ib">
                             <a class="sm-text" data-target="contact" href="">contacto</a>
                         </li>
                     </ul>
@@ -74,7 +75,7 @@
                     <ul class="mobile-main-menu">
                         <li><a data-target="about" href="#">empresa</a></li>
                         <li><a data-target="history" href="#">historia</a></li>
-                        <li><a data-target="technology" href="#">productos</a></li>
+                        <li><a data-target="products" href="#">productos</a></li>
                         <li><a data-target="technology" href="#">tecnología</a></li>
                         <li><a data-target="ideas" href="#">tus ideas</a></li>
                         <li><a data-target="eco" href="#">sustentabilidad</a></li>
@@ -148,6 +149,32 @@
             <div id="history-flow">
                 <div id="history-flow-bck"></div>                
                 <div id="history-flow-front"></div>                
+            </div>
+        </section>
+        <section class="" id="products">
+            <div class="container center-text">
+                <div class="h2-divider"></div>
+                <h2>/productos apholos</h2>
+                <h3>dise&ntilde;o de calidad</h3>
+                <div class="h3-divider"></div>
+                <p class="upper bold center-text">filtrar por tipo de producto:</p>
+                <ul class="display-ib openSans light upper" id="filterin">
+                    <li class="display-ib filter" data-filter="todos">todos /</li>
+                    <li class="display-ib filter" data-filter="botones">botones /</li>
+                    <li class="display-ib filter" data-filter="remaches">remaches /</li>
+                    <li class="display-ib filter" data-filter="chapas">chapas /</li>
+                    <li class="display-ib filter" data-filter="broches">broches /</li>
+                    <li class="display-ib filter" data-filter="accesorios">accesorios</li>
+                </ul>
+                <ul id="grid">
+                    <li class="mix todos botones remaches chapas broches accesorios display-ib">
+                        <a href="">
+                            <img src="img/etiquetas-metalicas.jpg">
+                            <p class="upper">ver etiquetas metálicas</p>
+                        </a>
+                    </li>
+                </ul>
+                <a href="" class="load-more">/cargar más productos+</a>
             </div>
         </section>
         
