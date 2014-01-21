@@ -290,6 +290,9 @@ section{
     -webkit-box-shadow: 0 0 0 2px #B3B2B1;
     box-shadow: 0 0 0 2px #B3B2B1;
 }
+.no-pad{
+    padding: 0;
+}
 
 /* Columns modifications */
 .col-md-4{
@@ -781,6 +784,9 @@ header{
 #filterin li{
     cursor: pointer;
 }
+#filterin li.active span{
+    font-weight: 400;
+}
 #grid{
     text-align: left;
     margin-top: 130px;
@@ -811,6 +817,104 @@ header{
     padding: 15px 12px;
     border: 1px #7d7d7d solid;
 }
+
+
+
+/*-------------- Technology -------------*/
+#technology{
+    background-image: url(../img/prods-back.jpg);
+}
+#technology .container>p{
+    margin-top: 20px;
+}
+.tech-gallery{
+    background-color: #fff;
+    border-bottom: 1px #efefef solid;
+    margin-top: 55px;
+}
+#tech-gallery-container, #tech-gallery-container li{
+    height: 506px;
+    width: 100%;
+}
+#tech-gallery-container li{
+    background-size: cover;
+    background-position: center;
+}
+.tech-gallery-navigation{
+    width: 100%;
+    padding: 24px 0 20px 27px;
+    overflow: auto;
+    line-height: 40px;
+}
+#tech-gallery-controls{
+    cursor: pointer;
+}
+#tech-gallery-thumbs li{
+    padding: 0 4px;
+    position: relative;
+}
+#tech-gallery-thumbs li img{
+    position: absolute;
+    -webkit-transition: opacity 0.7s ease;
+    -moz-transition: opacity 0.7s ease;
+    -ms-transition: opacity 0.7s ease;
+    -o-transition: opacity 0.7s ease;
+    transition: opacity 0.7s ease;
+    left: 0;
+}
+#tech-gallery-thumbs li a:hover .img-inactive{
+    opacity: 0
+}
+.active .img-inactive{
+    opacity: 0
+}
+#tech-gallery-thumbs li, #tech-gallery-thumbs li a{
+    height: 40px;
+    width: 69px;
+}
+#tech-gallery-thumbs li a{
+    overflow: hidden;
+    display: block;
+}
+.tech-gallery-bttns{
+    float: left;
+}
+.tech-gallery-bttns p{
+    padding-left: 5px;
+    -webkit-transition: opacity 0.7s ease;
+    -moz-transition: opacity 0.7s ease;
+    -ms-transition: opacity 0.7s ease;
+    -o-transition: opacity 0.7s ease;
+    transition: opacity 0.7s ease;
+}
+#tech-gallery-thumbs{
+    float: right;
+}
+
+/* slides */
+#fotocromia{
+    background-image: url(../img/technology/images/fotocromia.jpg);
+}
+#galvanoplastia{
+    background-image: url(../img/technology/images/galvanoplastia.jpg);
+}
+#grabado-laser{
+    background-image: url(../img/technology/images/grabado-laser.jpg);
+}
+#limpiado-manual{
+    background-image: url(../img/technology/images/limpiado-manual.jpg);
+}
+#pintura-a-gota{
+    background-image: url(../img/technology/images/pintura-a-gota.jpg);
+}
+#pintura{
+    background-image: url(../img/technology/images/pintura.jpg);
+}
+
+
+
+
+
 
 
 
@@ -872,6 +976,21 @@ header{
         position: static;
         -webkit-box-shadow: none;
         box-shadow: none;
+    }
+}
+@media (max-width: 960px){
+    #products .container{
+        width: 720px
+    }
+}
+@media (max-width: 720px){
+    #products .container{
+        width: 480px
+    }
+}
+@media (max-width: 480px){
+    #products .container{
+        width: 240px
     }
 }
 

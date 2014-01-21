@@ -14,7 +14,8 @@
 	$selected = mysql_select_db("apholos", $dbHandle);
 
 	$i = $_POST["index"];
-	$query = mysql_query("SELECT thumb, image, categories, caption from images LIMIT ".$i.", 11");
+	$l = $_POST["limit"];
+	$query = mysql_query("SELECT thumb, image, categories, caption from images LIMIT ".$i.", ".$l);
 
 	$images = array();
 	while ($row = mysql_fetch_assoc($query)) {

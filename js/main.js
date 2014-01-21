@@ -43,7 +43,7 @@
 				else
 					$elem.height(winHeight);
 			});
-			this.$sections.$.each(function() {
+			this.$sections.each(function() {
 				$(this).css({"min-height": winHeight});
 			});
 		},
@@ -117,8 +117,8 @@
 			event.preventDefault();
 
 			var top = this.$active.offset().top;
-			var bottom = this.$active.height() + top;
-			this.actHeight = this.$active.height();
+			var bottom = this.$active.innerHeight() + top;
+			this.actHeight = this.$active.innerHeight();
 
 			var $secLvlPrev = this.$active.prev("section").find(".scroll-second-lvl");
 			if($secLvlPrev.length)
@@ -279,10 +279,11 @@
 		toggleMenu: function(e){
 			e.stopPropagation();
             e.preventDefault();
+            var self = this;
             if(this.$menu.hasClass('bt-menu-open')){
             	this.$menu.removeClass('bt-menu-open').addClass('bt-menu-close');
             	this.$menu.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(){
-            		this.$header.height(50);
+            		self.$header.height(50);
             	});
             }else{
         		this.$header.height("100%");
@@ -331,11 +332,27 @@
 			var self = this;
 
 			var last = this.$gallery.find('li').length - 1;
+			var lim = 11;
+			switch(true){
+				case this.$resizer.winW >= 960:
+					lim = 11;
+					break;
+				case this.$resizer.winW >= 720:
+					lim = 8;
+					break;
+				case this.$resizer.winW >= 480:
+					lim = 5;
+					break;
+				case this.$resizer.winW >= 240:
+					lim = 2;
+					break;
+				
+			}
 			$.ajax({
 				url: 'loadMore.php',
 				type: 'POST',
 				dataType: 'json',
-				data: {index: last},
+				data: {index: last, limit: lim},
 			})
 			.done(function(data) {
 				$.each(data, function(index, val) {
@@ -349,7 +366,6 @@
 			
 		},
 		createItem: function(item){
-			console.log(item);
 			var li = document.createElement("li");
             this.$last.before(li);
             var $li = this.$last.prev();
@@ -359,8 +375,51 @@
 
 
 		}
-	}
+	};
 
+
+	var ProdsGallery = function(){
+		this.$container = $(".tech-gallery");
+		this.$gallery = this.$container.find("#tech-gallery-container");
+		this.$slides = this.$gallery.find("li");
+		this.$btnContainer = this.$container.find(".tech-gallery-bttns");
+		this.$prev = this.$btnContainer.find('#tech-gallery-prev');
+		this.$next = this.$btnContainer.find('#tech-gallery-next');
+		this.$pager = this.$container.find("#tech-gallery-thumbs");
+		this.$caption = this.$btnContainer.find('p');
+		this.init();
+	};
+
+	ProdsGallery.prototype = {
+		init: function(){
+			var self = this;
+			this.slider = this.$gallery.bxSlider({
+				controls: false,
+				pagerCustom: self.$pager,
+				onSlideAfter: function($slideElement, oldIndex, newIndex){
+					self.changeSlide($slideElement);
+				},
+				onSlideBefore: function(){
+					self.$caption.css({opacity: 0});
+				}
+			})
+			this.bindEvents()
+		},
+		bindEvents: function(){
+			var self = this;
+			this.$prev.on('click', function(){
+				self.slider.goToPrevSlide();
+			});
+			this.$next.on('click', function(){
+				self.slider.goToNextSlide();
+			});
+			
+		},
+		changeSlide: function(e){
+			this.$caption.html(e.data("caption")).css({opacity: 1});
+
+		}
+	}
 
 
 	$(document).ready(function(){
@@ -369,6 +428,7 @@
 		var menu = new Menu(pscroll);
 		var mobMenu = new MobileMenu(pscroll);
 		var portfolio = new Portfolio(resizer);
+		var products = new ProdsGallery();
 	});
 
 })(jQuery);
