@@ -146,10 +146,10 @@
 				}else if(top < this.winH && this.$active.prev("section").length){
 					var topn = (top + speed > this.winH) ? this.winH : top + speed;
 					this.$active.css({top : topn});
-					if(this.$active.offset().top > 0 && this.$active.offset().top < this.winH){
+					//if(this.$active.offset().top > 0 && this.$active.offset().top < this.winH){
 						$sec.css({top : sec + event.deltaFactor});
 						$secLvlPrev.css({top : secTopPrev + event.deltaFactor});
-					}
+					//}
 				}
 			}
 		},
@@ -419,6 +419,72 @@
 			this.$caption.html(e.data("caption")).css({opacity: 1});
 
 		}
+	};
+
+
+
+
+
+	var WorldMap = function(){
+		this.$bod = $('body');
+		this.$map = this.$bod.find("#world-map");
+		this.$markers = this.$map.find("li");
+		this.$clickHandlers = this.$markers.find('.wm-click-handler');
+		this.$popup = this.$map.find("#wm-popup");
+		this.$location = this.$popup.find('#wm-loc');
+		this.$mail = this.$popup.find('#wm-mail');
+		this.$active = this.$markers.siblings('.wm-active');
+		this.init();
+	};
+
+	WorldMap.prototype = {
+		init: function(){
+			this.mapHeight = this.$map.height();
+
+			this.bindEvents();
+		},
+		bindEvents: function(){
+			var self = this;
+			this.$clickHandlers.on('click', function(e){
+				self.togglePopup(e);
+			});
+			this.$bod.on('click', function(){
+				self.closePopup();
+			});
+		},
+		togglePopup: function(e){
+			var self = this;
+			var elem = $(e.currentTarget).parent();
+			if(!elem.hasClass('wm-active')){
+	 			if (this.$active.length >0){
+		 			this.$popup.fadeOut(400, function() {
+		 				this.changePopup(elem, elem.data("location"), elem.data("mail"));
+		 			});
+	 			}else{
+	 				this.changePopup(elem, elem.data("location"), elem.data("mail"));
+	 			}
+	 			this.$active.removeClass('wm-active');
+	 			this.$active = elem.addClass('wm-active');
+			}
+
+		},
+		changePopup: function(e, loc, mail){
+ 			var coordY = this.mapHeight - parseInt(e.css("top"));
+			this.$location.html(loc);
+			this.$mail.html(mail);
+ 			var coordX = parseInt(e.css("left")) - (this.$popup.width()/2);
+			var popupW = this.$popup.width();
+			this.$popup.css({
+				bottom: coordY,
+				left: coordX,
+				opacity: 1
+			});
+		},
+		closePopup: function(){
+			this.$popup.fadeOut(400, function() {
+				
+			});
+		}
 	}
 
 
@@ -429,6 +495,7 @@
 		var mobMenu = new MobileMenu(pscroll);
 		var portfolio = new Portfolio(resizer);
 		var products = new ProdsGallery();
+		var wm = new WorldMap();
 	});
 
 })(jQuery);
