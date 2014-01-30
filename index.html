@@ -32,7 +32,7 @@
                         <a class="sm-text" href="">acceso clientes</a>
                         <div>
                             <object type="image/svg+xml" data="img/log-in-flecha.svg" class="clients-arrow"></object>
-                            <object type="image/svg+xml" data="img/log-in-door.svg"></object>
+                            <object type="image/svg+xml" data="img/log-in-door.svg" class="clients-door"></object>
                         </div>
                     </div>
                     <div class="language">
@@ -280,19 +280,91 @@
             </div>
             <div id="world-map">
                 <div id="wm-popup">
-                    <div>
+                    <div id="wm-popup-info">
                         <p id="wm-loc"></p>                        
                         <p id="wm-mail"></p>
                     </div>
-                    <object type="image/svg+xml" data="img/world-map-triangles.svg"></object>
+                    <div id="wm-popup-triangle">
+                        <object type="image/svg+xml" data="img/world-map-triangles.svg"></object>
+                    </div>
                 </div>
                 <ul>
-                    <li data-location="lorem ipsum" data-mail="test@apholos.com.lorem" id="wm-us">
+                    <li id="wm-us">
+                        <p class="bold upper">US</p>
+                        <a class="lower" href="test@apholos.com.us">test@apholos.com.us</a>
+                        <object class="wm-marker" type="image/svg+xml" data="img/world-map-markers.svg"></object>
+                        <div class="wm-click-handler"></div>
+                    </li>
+                    <li id="wm-mex">
+                        <p class="bold upper">México</p>
+                        <a class="lower" href="test@apholos.com.mx">test@apholos.com.mx</a>
                         <object class="wm-marker" type="image/svg+xml" data="img/world-map-markers.svg"></object>
                         <div class="wm-click-handler"></div>
                     </li>
                 </ul>
             </div>
+        </section>
+        <section id="contact">
+            <div class="container center-text">
+                <div class="h2-divider"></div>
+                <h2>¿dudas, consultas?</h2>
+                <h3>hablemos</h3>
+                <div class="h3-divider"></div>
+                <div class="row contact-form-info">
+                    <div class="col-md-6">
+                        <h3><object id="google-marker-icon" type="image/svg+xml" data="img/google-marker.svg"></object>/apholos argentina.</h3><br>
+                        <p>Av Francisco Beiró 3232<br>
+                        C.A.B.A.<br>
+                        Argentina.<br>
+                        <br>
+                        ----<br>
+                        Te: +(5411) 4444 4444<br>
+                        Fax: + (5411) 4444 4444<br>
+                        Mail: info@apholos.com</p>
+                    </div>
+                    <div class="col-md-6">
+                        <form action="" method="post">
+                            <input type="text" name="name" placeholder="/nombre" required>
+                            <input type="email" name="email" placeholder="/e-mail" required>
+                            <textarea name="message" placeholder="/mensaje" required></textarea>
+                            <input type="submit" value="/enviar">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="g-map-container">
+                <div id="g-map">
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6" id="social">
+                        <img class="display-ib" src="img/instagram-logo.jpg">
+                        <div class="display-ib">
+                            <iframe src="http://snapwidget.com/in/?u=ZGFnbmVyaXxpbnwxMTF8MnwyfHxub3wwfGZhZGVPdXR8b25TdGFydHxubw==&v=29114" title="Instagram Widget" allowTransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:222px; height:222px"></iframe>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <ul id="social-icons">
+                            <li id="fb-cont">
+                                <object type="image/svg+xml" data="img/icons/facebook-hover.svg"></object>
+                                <object class="hover-icon" type="image/svg+xml" data="img/icons/facebook.svg"></object>
+                                <a href=""></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <footer>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-2"></div>
+                    </div>
+                </div>
+            </footer>
         </section>
         
         
@@ -300,6 +372,7 @@
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
         <script src="js/vendor/bootstrap.min.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>

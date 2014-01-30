@@ -445,26 +445,31 @@
 		},
 		bindEvents: function(){
 			var self = this;
-			this.$clickHandlers.on('click', function(e){
+			this.$map.on('click', function(e){
 				self.togglePopup(e);
 			});
-			this.$bod.on('click', function(){
-				self.closePopup();
-			});
+			
 		},
 		togglePopup: function(e){
 			var self = this;
-			var elem = $(e.currentTarget).parent();
-			if(!elem.hasClass('wm-active')){
-	 			if (this.$active.length >0){
-		 			this.$popup.fadeOut(400, function() {
-		 				this.changePopup(elem, elem.data("location"), elem.data("mail"));
-		 			});
-	 			}else{
-	 				this.changePopup(elem, elem.data("location"), elem.data("mail"));
-	 			}
-	 			this.$active.removeClass('wm-active');
-	 			this.$active = elem.addClass('wm-active');
+			console.log(e.target);
+			if (!this.$popup.is(e.target) && !this.$clickHandlers.is(e.target) && !this.$markers.is(e.target) && !this.$popup.find('*').is(e.target)) {
+				this.closePopup();
+			}else if(this.$clickHandlers.is(e.target)){
+				var li = $(e.target).parent();
+				var loc = li.find('p').html();
+				var mail = li.find('a').html();
+				if(!li.hasClass('wm-active')){
+		 			if (this.$active.length >0){
+			 			this.$popup.fadeTo(300, 0, function() {
+			 				self.changePopup(li, loc, mail);
+			 			});
+		 			}else{
+						console.log("entro");
+		 				this.changePopup(li, loc, mail);
+		 			}
+		 			
+				}
 			}
 
 		},
@@ -472,20 +477,68 @@
  			var coordY = this.mapHeight - parseInt(e.css("top"));
 			this.$location.html(loc);
 			this.$mail.html(mail);
- 			var coordX = parseInt(e.css("left")) - (this.$popup.width()/2);
+ 			var coordX = parseInt(e.css("left")) - (this.$popup.width()/2) + 15;
 			var popupW = this.$popup.width();
 			this.$popup.css({
 				bottom: coordY,
-				left: coordX,
-				opacity: 1
-			});
+				left: coordX
+			}).fadeTo(300, 1);
+			this.$active.removeClass('wm-active');
+ 			e.addClass('wm-active');
+ 			this.$active = e;
 		},
 		closePopup: function(){
-			this.$popup.fadeOut(400, function() {
-				
+			var self = this;
+			this.$popup.fadeTo(300, 0, function() {
+				self.$popup.css({
+					bottom: 0,
+					left: 0
+				});
 			});
+ 			this.$active.removeClass('wm-active');
 		}
-	}
+	};
+
+
+
+	var GoogleMaps = function(){
+		this.$mapContainer = $('#g-map');
+		this.init();
+	};
+
+	GoogleMaps.prototype = {
+		init: function(){
+			var noPoi = [
+	            {
+	                featureType: "poi.business",
+	                stylers: [
+	                  { visibility: "off" }
+	                ]   
+	              }
+	            ];
+            var map = document.getElementById('g-map');
+
+            var map_options = {
+              center: new google.maps.LatLng(-34.605762,-58.512862),
+              zoom: 19,
+              mapTypeId: google.maps.MapTypeId.ROADMAP,
+              styles: noPoi
+            }
+            var map = new google.maps.Map(map, map_options)
+            var marker = new google.maps.Marker({
+              position: new google.maps.LatLng(-34.606026,-58.512084),
+              map: map,
+            });
+
+
+            var contentString = '<h3>Av Francisco Beiro 4343</h3>'+
+        						'<p>Buenos Aires, Ciudad Autónoma de Buenos Aires</p>';
+			var infowindow = new google.maps.InfoWindow({
+			      content: contentString
+			  });
+			infowindow.open(map,marker);
+		}
+	};
 
 
 	$(document).ready(function(){
@@ -496,6 +549,7 @@
 		var portfolio = new Portfolio(resizer);
 		var products = new ProdsGallery();
 		var wm = new WorldMap();
+		var gm = new GoogleMaps();
 	});
 
 })(jQuery);
