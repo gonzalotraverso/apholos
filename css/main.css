@@ -159,6 +159,9 @@ h4{
     border-bottom: 1px #97928f solid;
     padding: 10px 0;
 }
+h5{
+    font-size: 20px;
+}
 h4, p, input, textarea{
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -318,7 +321,7 @@ input[type = submit]:hover{
 section{
     padding-bottom: 94px;
     border-bottom: 2px #f6f5f4 solid;
-    position: absolute;
+    /*position: absolute;*/
     width: 100%;
     background-color: #fff;
     -webkit-box-shadow: 0 0 0 2px #B3B2B1;
@@ -471,7 +474,7 @@ header{
     width: 17px;
     background-color: #e6e6e6;
     position: relative;
-    
+    left: 0
 }
 #desktop-menu .language .lang .sub-lang, #desktop-menu .clients>div object{
     -webkit-transition: left 0.3s ease;
@@ -780,13 +783,25 @@ header{
 .intro{
     background-image: url(../img/apholos-poster.jpg);
     background-position: center top;
-    /*background-attachment: fixed;*/
+    background-attachment: fixed;
     /*max-height: 932px;*/
     background-size: cover;
 }
 .intro img{
     margin-top: 14px;
     width: 48px;
+    cursor: pointer;
+    -webkit-transition: all 0.3s ease-out; 
+    -moz-transition: all 0.3s ease-out; 
+    -o-transition: all 0.3s ease-out; 
+    transition: all 0.3s ease-out; 
+}
+.intro img:hover{
+    -webkit-transform: scale(1.1); 
+    -moz-transform: scale(1.1); 
+    -ms-transform: scale(1.1); 
+    -o-transform: scale(1.1); 
+    transform: scale(1.1); 
 }
 
 
@@ -803,9 +818,112 @@ header{
 
 
 /*--------------- History ---------------*/
-#history-flow{
-
+#history{
+    text-align: center;
 }
+#history-flow{
+    height: 466px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+#hf-bck, #hf-front{
+   /* -webkit-transition: left 0.8s ease-in-out;
+    -moz-transition: left 0.8s ease-in-out;
+    -ms-transition: left 0.8s ease-in-out;
+    -o-transition: left 0.8s ease-in-out;
+    transition: left 0.8s ease-in-out;*/
+}
+#hf-bck, #hf-front li{
+    position: absolute;
+}
+#hf-front{
+    position: relative;
+    left: 0;
+}
+#hf-bck{
+    height: 100%;
+    width: 2500px;
+    background-image: url(../img/history-back.jpg);
+    background-position: left top;
+    left: 0;
+}
+#hf-front li{
+    width: 240px;
+    text-align: left;
+    color: #FFF;
+}
+#hf-front li p{
+    color: #fff;
+}
+.hf-dot{
+    height: 37px;
+    width: 37px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    background-color: #ff4800;
+    border: 2px #fff solid
+}
+#history-controls{
+    padding-top: 6px;
+}
+#history-controls li{
+    cursor: pointer;
+    width: 42px;
+    height: 42px;
+    border: 1px #828282 solid;
+    padding-top: 7px;
+    position: relative;
+    -webkit-transition: border-color 0.3s ease;
+    -moz-transition: border-color 0.3s ease;
+    -ms-transition: border-color 0.3s ease;
+    -o-transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease;
+}
+#history-controls li:hover{
+    border: 1px #ff4800 solid;
+}
+#history-controls span{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor: pointer;
+}
+
+/* history points */
+.hf-top-pos{
+    top: 43px;
+}
+.hf-btt-pos-1{
+    top: 302px;
+}
+.hf-btt-pos-2{
+    top: 265px;
+}
+
+#hf-point-1{
+    left: 104px;
+}
+#hf-point-2{
+    left: 454px;
+}
+#hf-point-3{
+    left: 804px;
+}
+#hf-point-4{
+    left: 1154px;
+}
+#hf-point-5{
+    left: 1504px;
+}
+#hf-point-6{
+    left: 1854px;
+}
+
+
 
 
 /*--------------- Products --------------*/
@@ -1028,6 +1146,53 @@ header{
     top: 24.375%;
 }
 
+
+
+
+/*--------------- Eco ---------------*/
+
+.eco-intro{
+    background-image: url(../img/eco-friendly.jpg);
+    background-position: center top;
+    background-attachment: fixed;
+    max-height: 832px;
+    /*background-size: cover;*/
+}
+#eco-img-box{
+    height: 346px;
+    width: 800px;
+    border: 1px #fff solid;
+    margin: 0 auto;
+    padding-top: 30px;
+}
+#eco-img-box h1{
+    letter-spacing: 0;
+    margin: 0;
+}
+.eco-divider{
+    border-top: 2px #f6f5f4 solid;
+    margin-top: 94px;
+}
+#eco-icons img{
+    max-width: 223px;
+    margin: 0 auto;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+#eco-icons img:hover{
+    -webkit-transform: scale(1.3); 
+    -moz-transform: scale(1.3); 
+    -ms-transform: scale(1.3); 
+    -o-transform: scale(1.3); 
+    transform: scale(1.3);
+}
+
+
+
+
 /*---------------- World ---------------*/
 #world{
     background-image: url(../img/en-el-mundo-back.jpg);
@@ -1106,7 +1271,9 @@ header{
 
 
 /*--------------- Contact --------------*/
-
+#contact{
+    padding-bottom: 0;
+}
 .contact-form-info h3{
     text-align: left;
     font-size: 22px;
@@ -1130,14 +1297,24 @@ header{
 #g-map h3{
     font-size: 18px;
 }
-#social>img{
+#social-container{
+    text-align: center;
+}
+#social-container .row{
+    padding: 34px 0 48px 0;
+}
+#social div{
+    display: inline-block;
+}
+#social div>img{
     padding-right: 40px;
     float: left;
 }
-#social-icons li{
-    display: inline-block;
-    width: 72px;
-    height: 72px;;
+#social-networks{
+    padding-left: 20px;
+    padding-right: 0;
+}
+.icon-cont{
     position: relative;
     -webkit-transition: background-color 0.3s ease-out; 
     -moz-transition: background-color 0.3s ease-out; 
@@ -1150,22 +1327,27 @@ header{
     -o-transition: opacity 0.3s ease-out; 
     transition: opacity 0.3s ease-out;
 }
-#social-icons li:hover{
-    background-color: #fff
+.icon-cont object{
+    left: 50%;
+    top: 50%;
+    position: absolute;
 }
-#social-icons li:hover .hover-icon{
-    opacity: 0;
-}
-#social-icons li a{
+.icon-cont a{
     height: 100%;
     width: 100%;
     display: inline-block;
     position: absolute;
 }
-#social-icons li object{
-    left: 50%;
-    top: 50%;
-    position: absolute;
+#social-icons li{
+    display: inline-block;
+    width: 72px;
+    height: 72px;;
+}
+#social-icons li:hover{
+    background-color: #fff
+}
+#social-icons li:hover .hover-icon{
+    opacity: 0;
 }
 #fb-cont{
     background-color: #527ebf;
@@ -1175,7 +1357,91 @@ header{
     width: 14px;
     margin: -14px 0 0 -7px;
 }
+#pin-cont{
+    background-color: #ca2128;
+}
+#pin-cont object{
+    height: 28px;
+    width: 22px;
+    margin: -14px 0 0 -11px;
+}
+#vim-cont{
+    background-color: #1ab7ea;
+}
+#vim-cont object{
+    height: 24px;
+    width: 28px;
+    margin: -12px 0 0 -14px;
+}
+#plus-cont{
+    background-color: #da4938;
+}
+#plus-cont object{
+    height: 24px;
+    width: 28px;
+    margin: -12px 0 0 -14px;
+}
+#twit-cont{
+    background-color: #1abfdf;
+}
+#twit-cont object{
+    height: 24px;
+    width: 28px;
+    margin: -12px 0 0 -14px;
+}
+#link-cont{
+    background-color: #007bb6;
+}
+#link-cont object{
+    height: 28px;
+    width: 28px;
+    margin: -14px 0 0 -14px;
+}
+footer{
+    background-color: #fafafa;
+    border-top: 1px #d6d6d6 solid;
+    border-bottom: 15px #ff4800 solid;
+}
+footer .row{
+    padding: 24px 0;
+}
+footer .logo{
+    padding: 0;
+    width: auto;
+    height: auto
+}
+footer p{
+    font-size: 12px;
+}
 
+.cert-cont img{
+   margin: 0 auto;
+   width: 138px
+}
+#go-to-top{
+    cursor: pointer;
+}
+#go-to-top p{
+    text-align: center;
+    padding-top: 8px;
+}
+#go-to-top .icon-cont{
+    width: 60px;
+    height: 60px;
+    background-color: #eeeeee;
+    margin: 0 auto;
+}
+#go-to-top .icon-cont object{
+    margin-left: -17px;
+    margin-top: -9px;
+    cursor: pointer;
+}
+#go-to-top:hover .icon-cont{
+    background-color: #ff4800;
+}
+#go-to-top:hover .hover-icon{
+    opacity: 0;
+}
 
 
 
@@ -1215,6 +1481,7 @@ header{
 }
 
 /* Mobile */
+/* width */
 @media (max-width: 1024px){
     
     /* Menu */
@@ -1259,6 +1526,23 @@ header{
     }
     .ideas-graph ul li p{
         font-size: 14px;
+    }
+    #social-networks{
+        padding-left: 0;
+    }
+    
+    #eco-icons{
+        padding: 0;
+    }
+    #eco-icons img{
+        width: 170px
+    }
+
+    footer p{
+        text-align: center;
+    }
+    footer .col-md-2{
+        padding: 10px 0
     }
 }
 @media (max-width: 960px){
@@ -1313,14 +1597,20 @@ header{
         vertical-align: baseline;
     }
 }
+@media (max-width: 800px){
+    #eco-img-box{
+        width: auto;
+        border: none;
+        height: auto;
+        padding: 0
+    }
+    .eco-intro{
+        height: 600px !important; /* had to use important to override inline style */
+    }
+}
 @media (max-width: 720px){
     .grid-container{
         width: 480px
-    }
-}
-@media (max-width: 480px){
-    .grid-container{
-        width: 240px
     }
 }
 @media (max-width: 690px){
@@ -1356,6 +1646,41 @@ header{
     .ideas-graph ul li.idea-tool{
         top: 580px;
     }
+    #tech-gallery-container, .bx-wrapper, .bx-viewport{
+        height: 300px !important;
+    }
+}
+@media (max-width: 670px){
+    .tech-gallery-navigation{
+        padding: 0 20px
+    }
+    .tech-gallery-bttns, #tech-gallery-thumbs{
+        float: none;
+    }
+}
+@media (max-width: 480px){
+    .grid-container{
+        width: 240px
+    }
+    
+    .eco-intro{
+        height: 300px !important; /* had to use important to override inline style */
+    }
+}
+@media (max-width: 422px){
+    #social div>img{
+        padding: 10px 40px;
+        float: none;
+    }
+    #social-icons{
+        max-width: 240px
+    }
+    #eco h1{
+        font-size: 38px;
+    }
+    #eco h1.h1-style-2{
+        font-size: 28px;
+    }
 }
 @media (max-width: 385px){ /* width of longest heading */
     h2{
@@ -1364,12 +1689,32 @@ header{
     h3{
         font-size: 26px;
     }
+
+    #history-flow{
+        height: 300px;
+        overflow: hidden;
+    }
+    #hf-front{
+        left: -95px;
+    }
+    #hf-bck{
+        height: 300px;
+    }
+    .hf-btt-pos-1{
+        top: 100px;
+    }
+    .hf-btt-pos-2{
+        top: 120px;
+    }
+
 }
 @media (max-width: 240px){
     .grid-container{
         width: 100%
     }
 }
+
+
 
 
 

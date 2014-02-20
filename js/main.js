@@ -77,7 +77,7 @@
 		this.$secLvl = this.$sections.find(".scroll-second-lvl");
 		this.$navItems = $("#desktop-menu nav li");
 		this.resizer = resizer;
-		this.init();
+		//this.init(); // NOT IMPLEMENTED | problem with different mousewheel speed on each browser/OS combo
 	}
 
 	ParallaxScrolling.prototype = {
@@ -165,7 +165,7 @@
 
 
 
-
+	// NOT IMPLEMENTED | functionality for parallax 
 	var Menu = function(pscroll){
 		this.$container = $("header");
 		this.$deskNav = this.$container.find("#desktop-menu");
@@ -251,6 +251,12 @@
 		this.$overlay = this.$menu.find(".bt-overlay");
 		this.$items = this.$menu.find(".mobile-main-menu li a");
 		this.$sections = p.$sections;
+
+
+		// main menu | comment if parallax scrolling is used
+		this.$deskContainer = this.$header.find('#desktop-menu');
+		this.$deskItems = this.$deskContainer.find('nav li a').add('#intro-arrow').add('#go-up');
+		this.$active = $('nav-selected');
 		this.init();
 	}
 
@@ -270,6 +276,15 @@
 			this.$items.on(this.eventType, function(e){
 				self.scrollMenu(e);
 			});
+			this.$deskItems.on('click', function(e) {
+				self.scrollBody(e);
+			});
+			$(window).load(function() {
+				$('section').waypoint(function(direction){
+					self.currentMenuItem($(this), direction);
+				}, {offset: ($(this).hasClass('no-offset'))? 0 : self.$header.height()});
+			});
+			
 		},
 		mobilecheck: function(){
 			var check = false;
@@ -291,11 +306,24 @@
             }
 		},
 		scrollMenu: function(e){
+			this.scrollBody(e)
+			this.toggleMenu(e);
+		},
+		scrollBody: function(e){
 			e.preventDefault();
 			var $target = this.$sections.siblings("#" + $(e.currentTarget).data("target"));
-			var top = $target.offset().top;
-			this.$bod.scrollTo(top - 50, 800);
-			this.toggleMenu(e);
+			var offset = ($target.hasClass('no-offset')) ? 0 : this.$header.height();
+			var top = $target.offset().top - offset;
+			this.$bod.scrollTo(top, 800);
+		},
+		currentMenuItem: function(e, d){
+			var $next = (d == 'down') ? e : e.prev('section');
+			var secID = $next.attr('id');
+
+
+			this.$active.removeClass('nav-selected');
+			var $item = this.$deskContainer.find('[data-target=' + secID + ']');
+			this.$active = $item.parent('li').addClass('nav-selected');
 		}
 	};
 
@@ -414,6 +442,7 @@
 				self.slider.goToNextSlide();
 			});
 			
+			
 		},
 		changeSlide: function(e){
 			this.$caption.html(e.data("caption")).css({opacity: 1});
@@ -445,17 +474,22 @@
 		},
 		bindEvents: function(){
 			var self = this;
-			this.$map.on('click', function(e){
-				self.togglePopup(e);
+			
+			this.$clickHandlers.on({
+				mouseover: function(e){
+					self.togglePopup(e);
+				},
+				mouseout: function(){
+					self.closePopup();
+				}
 			});
 			
 		},
 		togglePopup: function(e){
 			var self = this;
-			console.log(e.target);
-			if (!this.$popup.is(e.target) && !this.$clickHandlers.is(e.target) && !this.$markers.is(e.target) && !this.$popup.find('*').is(e.target)) {
-				this.closePopup();
-			}else if(this.$clickHandlers.is(e.target)){
+			//if (!this.$popup.is(e.target) && !this.$clickHandlers.is(e.target) && !this.$markers.is(e.target) && !this.$popup.find('*').is(e.target)) {
+			//	this.closePopup();
+			//}else if(this.$clickHandlers.is(e.target)){
 				var li = $(e.target).parent();
 				var loc = li.find('p').html();
 				var mail = li.find('a').html();
@@ -465,12 +499,11 @@
 			 				self.changePopup(li, loc, mail);
 			 			});
 		 			}else{
-						console.log("entro");
 		 				this.changePopup(li, loc, mail);
 		 			}
 		 			
 				}
-			}
+			//}
 
 		},
 		changePopup: function(e, loc, mail){
@@ -482,14 +515,14 @@
 			this.$popup.css({
 				bottom: coordY,
 				left: coordX
-			}).fadeTo(300, 1);
+			}).fadeTo(200, 1);
 			this.$active.removeClass('wm-active');
  			e.addClass('wm-active');
  			this.$active = e;
 		},
 		closePopup: function(){
 			var self = this;
-			this.$popup.fadeTo(300, 0, function() {
+			this.$popup.fadeTo(200, 0, function() {
 				self.$popup.css({
 					bottom: 0,
 					left: 0
@@ -502,8 +535,11 @@
 
 
 	var GoogleMaps = function(){
+		var self = this;
 		this.$mapContainer = $('#g-map');
-		this.init();
+		$(window).load(function() {
+			self.init();
+		});
 	};
 
 	GoogleMaps.prototype = {
@@ -522,7 +558,8 @@
               center: new google.maps.LatLng(-34.605762,-58.512862),
               zoom: 19,
               mapTypeId: google.maps.MapTypeId.ROADMAP,
-              styles: noPoi
+              styles: noPoi,
+              scrollwheel: false
             }
             var map = new google.maps.Map(map, map_options)
             var marker = new google.maps.Marker({
@@ -541,15 +578,63 @@
 	};
 
 
+	var HistoryFlow = function(){
+		this.$container = $('#history-flow');
+		this.$back = this.$container.find('#hf-bck');
+		this.$front = this.$container.find('#hf-front');
+		this.$checkpoints = this.$front.find('li');
+		this.$controls = $('#history-controls li');
+		this.$prev = this.$controls.first().find('span');
+		this.$next = this.$controls.last().find('span');
+		this.init();
+	};
+
+	HistoryFlow.prototype = {
+		init: function(){
+			this.elemWidth = this.$checkpoints.first().width();
+			this.bindEvents();
+		},
+		bindEvents: function(){
+			var self = this;
+			this.$controls.on('click', function(e){
+				self.moveFlow(e);
+			});
+		},
+			moveFlow: function(e){
+				if(!this.$front.is(':animated')){
+					var self = this;
+
+					e.preventDefault();
+
+					var contWidth = this.$container.width();
+					var diff = (this.$checkpoints.last().offset().left + this.elemWidth); // if position of last element is larger than screen width this is > 1
+					
+					var dir = ($(e.target).is(this.$prev)) ? 1 : -1; // arrow direction
+					var pos = this.$front.offset().left; // position of elements container
+					var backPos = this.$back.offset().left; // position of background
+
+					if( (dir == 1 && -pos > 0) || (dir == -1 && diff > contWidth) ){ 
+						this.$front.animate({left : pos + (dir * 350)}, 800);
+						this.$back.animate({left : backPos + (dir * 200)}, 800);
+						// this.$front.css({left : pos + (dir * 350)});
+						// this.$back.css({left : backPos + (dir * 200)});
+					}
+				}
+				
+		}
+	};
+
+
 	$(document).ready(function(){
 		var resizer = new Resizer();
-		var pscroll = new ParallaxScrolling(resizer);
-		var menu = new Menu(pscroll);
+		var pscroll = new ParallaxScrolling(resizer); // NOT IMPLEMENTED | problem with different mousewheel speed on each browser/OS combo | only using attributes
+		// var menu = new Menu(pscroll); // NOT IMPLEMENTED | functionality for parallax 
 		var mobMenu = new MobileMenu(pscroll);
 		var portfolio = new Portfolio(resizer);
 		var products = new ProdsGallery();
 		var wm = new WorldMap();
 		var gm = new GoogleMaps();
+		var hf = new HistoryFlow();
 	});
 
 })(jQuery);
