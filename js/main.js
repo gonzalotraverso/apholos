@@ -1,5 +1,11 @@
 (function($){
 	"use strict";
+
+
+
+	$.fn.refresh = function() {
+	    return $(this.selector);
+	};
 	
 
 	var Resizer = function(){
@@ -12,8 +18,8 @@
 
 	Resizer.prototype = {
 		init: function(){
-			this.wigleyRoom = 20;
 			this.winW = this.$win.width();
+			this.$sections.siblings('#intro').height($(window).height() + 2);
 
 			this.bindEvents();
 		},
@@ -33,7 +39,7 @@
 		},
 		resizeIt: function(){
 			var self = this;
-			var winHeight = this.$win.height();
+			var winHeight = $(window).height();
 
 			this.$adjustees.each(function(){
 				var $elem = $(this);
@@ -267,19 +273,19 @@
 		},
 		bindEvents: function(){
 			var self = this;
-			this.$trigger.on(this.eventType , function(e){
-				self.toggleMenu(e);
-			});
-			this.$overlay.on(this.eventType, function(e){
-				self.toggleMenu(e);
-			});
-			this.$items.on(this.eventType, function(e){
-				self.scrollMenu(e);
-			});
-			this.$deskItems.on('click', function(e) {
-				self.scrollBody(e);
-			});
 			$(window).load(function() {
+				self.$trigger.on(self.eventType , function(e){
+					self.toggleMenu(e);
+				});
+				self.$overlay.on(self.eventType, function(e){
+					self.toggleMenu(e);
+				});
+				self.$items.on(self.eventType, function(e){
+					self.scrollMenu(e);
+				});
+				self.$deskItems.on('click', function(e) {
+					self.scrollBody(e);
+				});
 				$('section').waypoint(function(direction){
 					self.currentMenuItem($(this), direction);
 				}, {offset: ($(this).hasClass('no-offset'))? 0 : self.$header.height()});
@@ -312,7 +318,7 @@
 		scrollBody: function(e){
 			e.preventDefault();
 			var $target = this.$sections.siblings("#" + $(e.currentTarget).data("target"));
-			var offset = ($target.hasClass('no-offset')) ? 0 : this.$header.height();
+			var offset = ($target.hasClass('no-offset') || $(e.target).is(this.$items)) ? ( ($(e.target).is(this.$items))? 50 : 0 ) : this.$header.height();
 			var top = $target.offset().top - offset;
 			this.$bod.scrollTo(top, 800);
 		},
@@ -335,15 +341,20 @@
 		this.$items = this.$gallery.find('li');
 		this.$img = this.$items.find("a");
 		this.$last = this.$items.last();
+		this.$filters = $('.filter');
 		this.$resizer = resizer;
 		this.init();
 	};
 
 	Portfolio.prototype = {
 		init: function(){
-			this.loadMore();
+			this.done = false;
 			$('#products').css('height', 'auto');
-			this.$img.fancybox();
+			this.loadMore();
+			
+
+			
+			
 			this.bindEvents();
 		},
 		bindEvents: function(){
@@ -352,14 +363,11 @@
 				e.preventDefault();
 				self.loadMore();
 			});
-			this.$gallery.mixitup({
-				filterSelector: ".filter"
-			});
 		},
 		loadMore: function(){
 			var self = this;
 
-			var last = this.$gallery.find('li').length - 1;
+			var last = (this.$gallery.find('li').length > 0)? this.$gallery.find('li').length - 1 : 0;
 			var lim = 11;
 			switch(true){
 				case this.$resizer.winW >= 960:
@@ -386,20 +394,30 @@
 				$.each(data, function(index, val) {
 					self.createItem(val);
 				});
-				self.$gallery.mixitup('remix', "all");
+				self.refreshGallery(lim);
 			})
 			.fail(function(xhr, textStatus, errorThrown) {
               	console.log(xhr.responseText);
           	});
-			
 		},
 		createItem: function(item){
 			var li = document.createElement("li");
             this.$last.before(li);
             var $li = this.$last.prev();
 			$li.addClass('mix display-ib '+item.categories)
-				.append('<a href="img/portfolio/images/'+item.image+'"><img src="img/portfolio/thumbs/'+item.thumb+'"><p class="upper">'+item.caption+'</p></a>');
+				.append('<a href="img/portfolio/images/'+item.image+'" class="fancy"><img src="img/portfolio/thumbs/'+item.thumb+'"><p class="upper">'+item.caption+'</p></a>');
             
+		},
+		refreshGallery: function(lim){
+			this.$gallery.refresh();
+			this.$items.refresh();
+			if(this.$items.length <= lim + 1)
+				this.$gallery.mixitup({
+					filterSelector: ".filter"
+				});
+			else
+				this.$gallery.mixitup('remix', "all");
+			this.$img.fancybox();
 
 
 		}
@@ -463,7 +481,8 @@
 		this.$location = this.$popup.find('#wm-loc');
 		this.$mail = this.$popup.find('#wm-mail');
 		this.$active = this.$markers.siblings('.wm-active');
-		this.init();
+		if ($(window).width() >= 960)
+			this.init();
 	};
 
 	WorldMap.prototype = {
@@ -475,60 +494,61 @@
 		bindEvents: function(){
 			var self = this;
 			
-			this.$clickHandlers.on({
-				mouseover: function(e){
+			this.$markers.on({
+				mouseenter: function(e){
 					self.togglePopup(e);
 				},
-				mouseout: function(){
-					self.closePopup();
+				mouseleave: function(e){
+					self.closePopup(e);
 				}
 			});
+			
 			
 		},
 		togglePopup: function(e){
 			var self = this;
-			//if (!this.$popup.is(e.target) && !this.$clickHandlers.is(e.target) && !this.$markers.is(e.target) && !this.$popup.find('*').is(e.target)) {
-			//	this.closePopup();
-			//}else if(this.$clickHandlers.is(e.target)){
-				var li = $(e.target).parent();
-				var loc = li.find('p').html();
-				var mail = li.find('a').html();
-				if(!li.hasClass('wm-active')){
-		 			if (this.$active.length >0){
-			 			this.$popup.fadeTo(300, 0, function() {
-			 				self.changePopup(li, loc, mail);
-			 			});
-		 			}else{
-		 				this.changePopup(li, loc, mail);
-		 			}
-		 			
-				}
-			//}
+			var $curr = ($(e.target).is('li'))? $(e.target) : $(e.target).parents('li');
+			if(!$curr.hasClass('wm-active')){
+				$curr.addClass('wm-active');
+
+				var currLeft = parseInt($curr.css('left'));
+				var ppWidth = $curr.find('.wm-popup').width();
+				var ppLeft = currLeft - (ppWidth/2) + 15;
+
+				var $popup = $curr.find('.wm-popup');
+				$popup.show();
+				var ppHeight = $popup.height();
+
+
+				$curr.css({
+					width: ppWidth,
+					left: ppLeft,
+					height: ppHeight + 30
+				});
+				$popup.fadeTo(100, 1);
+			}
+
+
 
 		},
-		changePopup: function(e, loc, mail){
- 			var coordY = this.mapHeight - parseInt(e.css("top"));
-			this.$location.html(loc);
-			this.$mail.html(mail);
- 			var coordX = parseInt(e.css("left")) - (this.$popup.width()/2) + 15;
-			var popupW = this.$popup.width();
-			this.$popup.css({
-				bottom: coordY,
-				left: coordX
-			}).fadeTo(200, 1);
-			this.$active.removeClass('wm-active');
- 			e.addClass('wm-active');
- 			this.$active = e;
-		},
-		closePopup: function(){
-			var self = this;
-			this.$popup.fadeTo(200, 0, function() {
-				self.$popup.css({
-					bottom: 0,
-					left: 0
+		closePopup: function(e){
+			var $curr = ($(e.target).is('li'))? $(e.target) : $(e.target).parents('li');
+			console.log($curr)
+
+			var currLeft = parseInt($curr.css('left'));
+			var mLeft = ($curr.width()/2) + currLeft -15;
+
+			var $popup = $curr.find('.wm-popup');
+
+			$popup.fadeTo(100, 0, function() {
+				$popup.hide();
+				$curr.css({
+					width: 30,
+					left: mLeft,
+					height: 30
 				});
+				$curr.removeClass('wm-active');
 			});
- 			this.$active.removeClass('wm-active');
 		}
 	};
 
@@ -625,8 +645,90 @@
 	};
 
 
+
+
+	var IdeaVideo = function(){
+		this.$container = $('#ideas-video');
+		this.init();
+	};
+
+	IdeaVideo.prototype = {
+		init: function(){
+			var self = this;
+			$(window).on('load', function(){
+				self.embedVideo();
+				self.$video = self.$container.find('#video');
+
+				self.aspectRatio = self.$video.height()/self.$video.width();
+
+				self.$video.removeAttr('height').removeAttr('width');
+				self.resizeVideo();
+				self.bindEvents();
+			});
+		},
+		embedVideo: function(){
+			this.$container.html('<iframe id="video" src="//player.vimeo.com/video/40261198?color=ffffff" width="930" height="512" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');
+		},
+		bindEvents: function(){
+			var self = this;
+			$(window).on('resize', function(){
+				self.resizeVideo();
+			});
+		},
+		resizeVideo: function(){
+			var contW = this.$container.width();
+			var newH = contW * this.aspectRatio;
+
+			this.$container.height(newH);
+
+			this.$video
+				.width(contW)
+				.height(newH); 
+		}
+	}
+
+
+
+
+
+	var Blurs = function(){
+		this.$blurs = $('.blur');
+		this.init();
+	};
+
+	Blurs.prototype = {
+		init: function(){
+
+			this.bindEvents();
+		},
+		bindEvents: function(){
+			var self = this;
+			$(window).on('scroll', function(e){
+				self.blurImage(e);
+			});
+		},
+		blurImage: function(e){
+			var win = $(window);
+			$.each(this.$blurs, function(index, blur) {
+				var $container = $(blur).parent();
+				var contH = $container.height();
+				var contPos = $container.offset().top;
+				var winPos = win.scrollTop() - contPos;
+				var q = Math.abs(winPos/contH * 5/3);
+				$(blur).css({
+					opacity: q
+				});
+			});
+			
+		}
+	}
+
+
+
+
+	var resizer = new Resizer();
+
 	$(document).ready(function(){
-		var resizer = new Resizer();
 		var pscroll = new ParallaxScrolling(resizer); // NOT IMPLEMENTED | problem with different mousewheel speed on each browser/OS combo | only using attributes
 		// var menu = new Menu(pscroll); // NOT IMPLEMENTED | functionality for parallax 
 		var mobMenu = new MobileMenu(pscroll);
@@ -635,6 +737,14 @@
 		var wm = new WorldMap();
 		var gm = new GoogleMaps();
 		var hf = new HistoryFlow();
+		var video = new IdeaVideo();
+		var blurs = new Blurs();
+
+
+
+		$(window).on('load', function(){
+			$('#instagram-container').html('<iframe src="http://snapwidget.com/in/?u=ZGFnbmVyaXxpbnwxMTF8MnwyfHxub3wwfGZhZGVPdXR8b25TdGFydHxubw==&v=29114" title="Instagram Widget" allowTransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:222px; height:222px"></iframe>');
+		});
 	});
 
 })(jQuery);

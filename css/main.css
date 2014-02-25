@@ -392,6 +392,21 @@ section{
     margin: 0 auto;
 }
 
+/* blured images */
+.blur{
+    background-position: center top;
+    background-attachment: fixed;
+    /*max-height: 932px;*/
+    background-size: cover;
+    /*position: absolute;*/
+    height: 100%;
+    width: 100%;
+    opacity: 0
+}
+
+
+
+
 
 /*----------------- Menu ----------------*/
 header{
@@ -780,12 +795,25 @@ header{
 
 
 /*---------------- Intro ----------------*/
-.intro{
-    background-image: url(../img/apholos-poster.jpg);
+
+
+#intro-blur{
+    background-image: url(../img/slider-home-blur.jpg);
+    opacity: 0;
+}
+#intro{
+    position: relative;
+    background-image: url(../img/slider-home.jpg);
     background-position: center top;
     background-attachment: fixed;
     /*max-height: 932px;*/
     background-size: cover;
+}
+.intro{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%
 }
 .intro img{
     margin-top: 14px;
@@ -1000,6 +1028,7 @@ header{
     padding: 24px 0 20px 27px;
     overflow: auto;
     line-height: 40px;
+    overflow-x: hidden;
 }
 #tech-gallery-controls{
     cursor: pointer;
@@ -1069,12 +1098,23 @@ header{
 
 
 /*---------------- ideas ---------------*/
+#ideas-video{
+    padding: 135px 0;
+    height: 512px;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
 .ideas-graph{
     background-image: url(../img/proceso-diseno-lineas-iconos.svg);
-    background-size: 100% 318px;
+    background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
     background-repeat: no-repeat;
     min-height: 318px;
     position: relative;
+}
+#ideas-graph-bck{
+    display: none;
 }
 .ideas-graph ul li{
     width: 157px;
@@ -1156,7 +1196,11 @@ header{
     background-position: center top;
     background-attachment: fixed;
     max-height: 832px;
-    /*background-size: cover;*/
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+#eco-intro-blur{
+    background-image: url(../img/eco-friendly-blur.jpg);
 }
 #eco-img-box{
     height: 346px;
@@ -1205,23 +1249,26 @@ header{
     height: 525px;
     position: relative;
 }
-#wm-popup{
-    position: absolute;
+.wm-popup{
+    display: none;
+    width: 300px;
+    /*position: absolute;*/
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
     -khtml-opacity: 0;
     opacity: 0;
     z-index: 100;
+    overflow: hidden;
 }
 #world-map p{
     margin: 0
 }
-#wm-popup #wm-popup-info{
+.wm-popup .wm-popup-info{
     background-color: #fff;
     padding: 10px 15px;
     border: 1px #f75515 solid;
 }
-#wm-popup-triangle{
+.wm-popup-triangle{
     width: 24px;
     height: 14px;
     margin: 0 auto;
@@ -1232,19 +1279,15 @@ header{
     height: 30px;
     width: 30px;
     position: absolute;
-    -webkit-transition: all 0.3s ease-out; 
-    -moz-transition: all 0.3s ease-out; 
-    -o-transition: all 0.3s ease-out; 
-    transition: all 0.3s ease-out; 
+   
 }
-#world-map li:hover{
-    -webkit-transform: scale(1.1); 
-    -moz-transform: scale(1.1); 
-    -ms-transform: scale(1.1); 
-    -o-transform: scale(1.1); 
-    transform: scale(1.1);
+.wm-marker-container{
+    height: 30px;
+    width: 30px;
+    margin: 0 auto;
+    position: relative;
 }
-#world-map li p, #world-map li a{
+.wm-mob-info{
     display: none;
 }
 .wm-marker{
@@ -1259,11 +1302,11 @@ header{
 
 /* countries */
 #wm-us{
-    top: 215px;
+    bottom: 285px;
     left: 200px;
 }
 #wm-mex{
-    top: 281px;
+    bottom: 218px;
     left: 180px;
 }
 
@@ -1306,9 +1349,13 @@ header{
 #social div{
     display: inline-block;
 }
-#social div>img{
+#instagram-logo{
     padding-right: 40px;
     float: left;
+    width: 160px
+}
+#ins-logo-img{
+    width: 110px;
 }
 #social-networks{
     padding-left: 20px;
@@ -1554,7 +1601,7 @@ footer p{
         height: auto;
         background-image: none;
     }
-    #wm-popup, .wm-marker, .wm-click-handler{
+    .wm-popup, .wm-marker-container{
         display: none;
     } 
     #world-map ul{
@@ -1583,17 +1630,11 @@ footer p{
         font-size:0;
         line-height:0;
     }
-    #world-map li:hover{
-        -webkit-transform: scale(1); 
-        -moz-transform: scale(1); 
-        -ms-transform: scale(1); 
-        -o-transform: scale(1); 
-        transform: scale(1);
-    }
-    #world-map li p, #world-map li a{
+    
+    .wm-mob-info{
         display: inline-block;
     }
-    #world-map li a{
+    a.wm-mob-info{
         vertical-align: baseline;
     }
 }
@@ -1614,12 +1655,22 @@ footer p{
     }
 }
 @media (max-width: 690px){
+    #ideas-video{
+        padding: 75px 0
+    }
     .ideas-graph{
-        background-image: url(../img/proceso-diseno-lineas-mobile.svg);
+        background-image: none;
         min-height: 700px;
-        background-size: 100% 650px;
         max-width: 480px;
-        margin: 0 auto
+        margin: 0 auto;
+        width: 100%;
+        position: relative;
+    }
+    #ideas-graph-bck{
+        display: block;
+        width: 100%;
+        position: absolute;
+        height: 650px;
     }
     .ideas-graph ul li{
         margin-left: 0;
@@ -1681,6 +1732,13 @@ footer p{
     #eco h1.h1-style-2{
         font-size: 28px;
     }
+
+    #instagram-logo{
+        padding: 0;
+        width: 100%;
+        text-align: center;
+    }
+
 }
 @media (max-width: 385px){ /* width of longest heading */
     h2{
