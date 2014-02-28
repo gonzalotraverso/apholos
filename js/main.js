@@ -19,7 +19,6 @@
 	Resizer.prototype = {
 		init: function(){
 			this.winW = this.$win.width();
-			this.$sections.siblings('#intro').height($(window).height() + 2);
 
 			this.bindEvents();
 		},
@@ -49,9 +48,7 @@
 				else
 					$elem.height(winHeight);
 			});
-			this.$sections.each(function() {
-				$(this).css({"min-height": winHeight});
-			});
+			
 		},
 		getMaxHeight: function(elem){
 			var $content = elem.children();
@@ -77,7 +74,8 @@
 	};
 
 
-	var ParallaxScrolling = function(resizer){
+	var ParallaxScrolling = function(){
+		var resizer = new Resizer();
 		this.$win = resizer.$win;
 		this.$sections = $('section');
 		this.$secLvl = this.$sections.find(".scroll-second-lvl");
@@ -248,7 +246,7 @@
 	};
 
 
-	var MobileMenu = function(p){
+	var MobileMenu = function(){
 		this.$bod = $("body");
 		this.$header = $("header");
 		this.$container = this.$header.find("#mobile-menu");
@@ -256,7 +254,7 @@
 		this.$trigger = this.$menu.find(".bt-menu-trigger");
 		this.$overlay = this.$menu.find(".bt-overlay");
 		this.$items = this.$menu.find(".mobile-main-menu li a");
-		this.$sections = p.$sections;
+		this.$sections = $('section');
 
 
 		// main menu | comment if parallax scrolling is used
@@ -335,7 +333,8 @@
 
 
 
-	var Portfolio = function(resizer){
+	var Portfolio = function(){
+		var resizer = new Resizer();
 		this.$button = $(".load-more");
 		this.$gallery = $("#grid");
 		this.$items = this.$gallery.find('li');
@@ -481,8 +480,7 @@
 		this.$location = this.$popup.find('#wm-loc');
 		this.$mail = this.$popup.find('#wm-mail');
 		this.$active = this.$markers.siblings('.wm-active');
-		if ($(window).width() >= 960)
-			this.init();
+		this.init();
 	};
 
 	WorldMap.prototype = {
@@ -496,7 +494,8 @@
 			
 			this.$markers.on({
 				mouseenter: function(e){
-					self.togglePopup(e);
+					if ($(window).width() >= 960)
+						self.togglePopup(e);
 				},
 				mouseleave: function(e){
 					self.closePopup(e);
@@ -724,21 +723,48 @@
 	}
 
 
+	var Loader = function(){
+		this.$container = $('#intro');
+		this.init();
+	};
+
+	Loader.prototype = {
+		init: function(){
+			this.$container.height($(window).height() + 2);
+
+		}
+	}
 
 
-	var resizer = new Resizer();
+
+
 
 	$(document).ready(function(){
-		var pscroll = new ParallaxScrolling(resizer); // NOT IMPLEMENTED | problem with different mousewheel speed on each browser/OS combo | only using attributes
+		//var loader = new Loader();
+		var response;
+		$.ajax({
+			url: 'content.php',
+			type: 'GET',
+			async: false,
+			success: function(text){
+				response = text;
+			}
+		});
+		
+		$('#intro').after(response);
+		//var resizer = new Resizer();
+		//var pscroll = new ParallaxScrolling(resizer); // NOT IMPLEMENTED | problem with different mousewheel speed on each browser/OS combo | only using attributes
 		// var menu = new Menu(pscroll); // NOT IMPLEMENTED | functionality for parallax 
-		var mobMenu = new MobileMenu(pscroll);
-		var portfolio = new Portfolio(resizer);
+		var mobMenu = new MobileMenu();
+		var portfolio = new Portfolio();
 		var products = new ProdsGallery();
 		var wm = new WorldMap();
 		var gm = new GoogleMaps();
 		var hf = new HistoryFlow();
 		var video = new IdeaVideo();
 		var blurs = new Blurs();
+		
+		
 
 
 
